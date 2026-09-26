@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Infiltración de cadera guiada por ultrasonido · LEMASOL Querétaro</title>
+<meta name="description" content="Infiltración de cadera con ácido hialurónico guiada por ultrasonido en Querétaro. Una aplicación al año. Valoración $1,000, se descuenta del procedimiento.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+  :root {
+    --paper: #F6F8F7;
+    --surface: #FFFFFF;
+    --ink: #10262C;
+    --ink-2: #4E6368;
+    --line: #D6E0DD;
+    --accent: #177E6E;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #DDEFEA;
+    --screen: #0E2A33;
+    --screen-ink: #DCEBE7;
+    --screen-line: #2F5A63;
+    --sand: #EFE8DB;
+    --sand-ink: #5B4A2E;
+    --wa: #1E9E5B;
+    --shadow: 0 1px 2px rgba(16,38,44,.06), 0 10px 30px rgba(16,38,44,.08);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0C191D;
+      --surface: #122529;
+      --ink: #E4EEEB;
+      --ink-2: #9FB4B0;
+      --line: #223A40;
+      --accent: #4FC3AE;
+      --accent-ink: #062018;
+      --accent-soft: #163B36;
+      --screen: #071519;
+      --screen-ink: #CFE2DC;
+      --screen-line: #2C5560;
+      --sand: #2A2418;
+      --sand-ink: #E2D3B4;
+      --wa: #2ABF6E;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0C191D;
+    --surface: #122529;
+    --ink: #E4EEEB;
+    --ink-2: #9FB4B0;
+    --line: #223A40;
+    --accent: #4FC3AE;
+    --accent-ink: #062018;
+    --accent-soft: #163B36;
+    --screen: #071519;
+    --screen-ink: #CFE2DC;
+    --screen-line: #2C5560;
+    --sand: #2A2418;
+    --sand-ink: #E2D3B4;
+    --wa: #2ABF6E;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    padding-bottom: 92px;
+  }
+  h1, h2, h3 {
+    font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  h1 { font-size: clamp(2rem, 6.2vw, 3.4rem); }
+  h2 { font-size: clamp(1.6rem, 4.2vw, 2.4rem); }
+  h3 { font-size: 1.2rem; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .wrap { width: min(1080px, 100%); margin-inline: auto; padding-inline: 20px; }
+  .prose { max-width: 62ch; }
+  .eyebrow {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .muted { color: var(--ink-2); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Header */
+  .top {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+  .brand { display: flex; flex-direction: column; line-height: 1.1; text-decoration: none; color: var(--ink); }
+  .brand b { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700; letter-spacing: .14em; font-size: 1.05rem; }
+  .brand span { font-size: .8rem; color: var(--ink-2); margin-top: 3px; }
+  .nav { display: none; gap: 22px; font-weight: 600; font-size: .95rem; }
+  .nav a { color: var(--ink); text-decoration: none; }
+  .nav a:hover { color: var(--accent); }
+  @media (min-width: 820px) { .nav { display: flex; } }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 13px 20px; border-radius: 999px; border: 1px solid transparent;
+    font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer;
+    font-family: inherit; line-height: 1;
+  }
+  .btn-wa { background: var(--wa); color: #fff; }
+  .btn-wa:hover { filter: brightness(1.07); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn-sm { padding: 10px 14px; font-size: .92rem; }
+
+  /* Hero */
+  .hero { padding-block: 44px 36px; }
+  .hero-grid { display: grid; gap: 28px; }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.15fr 1fr; align-items: center; gap: 48px; } .hero { padding-block: 64px 52px; } }
+  .hero h1 { margin-top: 14px; }
+  .hero .lead { font-size: 1.15rem; margin-top: 18px; max-width: 54ch; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .proof { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-size: .92rem; color: var(--ink-2); }
+  .proof li { list-style: none; display: flex; align-items: center; gap: 8px; }
+  .proof ul { padding: 0; margin: 0; display: contents; }
+  .proof svg { width: 16px; height: 16px; color: var(--accent); flex: none; }
+
+  .doors { display: grid; gap: 14px; }
+  .door {
+    display: grid; gap: 8px; padding: 22px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+    text-decoration: none; color: var(--ink);
+  }
+  .door:hover { border-color: var(--accent); }
+  .door .eyebrow { color: var(--ink-2); }
+  .door h3 { font-size: 1.35rem; }
+  .door p { color: var(--ink-2); font-size: .98rem; }
+  .door .go { color: var(--accent); font-weight: 600; margin-top: 4px; }
+  .door.cadera { border-top: 4px solid var(--accent); }
+  .door.estetica { border-top: 4px solid var(--sand-ink); }
+
+  /* Sections */
+  section { padding-block: 56px; border-top: 1px solid var(--line); scroll-margin-top: 72px; }
+  section h2 { margin-top: 10px; }
+  .intro { margin-top: 16px; font-size: 1.08rem; }
+  .split { display: grid; gap: 28px; margin-top: 30px; }
+  @media (min-width: 880px) { .split { grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; } }
+
+  .facts { display: grid; gap: 12px; margin-top: 22px; padding: 0; list-style: none; }
+  @media (min-width: 600px) { .facts { grid-template-columns: repeat(3, 1fr); } }
+  .fact { padding: 16px 18px; border-radius: 12px; background: var(--accent-soft); display: grid; gap: 4px; }
+  .fact b { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1; color: var(--accent); }
+  .fact span { font-size: .9rem; color: var(--ink-2); }
+
+  .checks { display: grid; gap: 10px; padding: 0; margin: 18px 0 0; list-style: none; }
+  .checks li { display: flex; gap: 12px; align-items: flex-start; }
+  .checks svg { width: 22px; height: 22px; color: var(--accent); flex: none; margin-top: 2px; }
+  .checks .no svg { color: var(--ink-2); }
+
+  /* Ultrasound depth panel */
+  .screen {
+    background: var(--screen); color: var(--screen-ink); border-radius: var(--radius);
+    padding: 16px; box-shadow: var(--shadow); display: grid; gap: 10px;
+  }
+  .screen .label { display: flex; justify-content: space-between; font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--screen-ink); opacity: .85; }
+  .screen svg { width: 100%; height: auto; display: block; }
+  .screen .cap { font-size: .9rem; opacity: .85; }
+
+  /* Treatment cards */
+  .cards { display: grid; gap: 14px; margin-top: 28px; }
+  @media (min-width: 640px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  .card { padding: 22px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: grid; gap: 8px; align-content: start; }
+  .card h3 { font-size: 1.22rem; }
+  .card p { color: var(--ink-2); font-size: .98rem; }
+  .card .zone { font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--sand-ink); font-weight: 600; }
+  .price-note {
+    margin-top: 22px; padding: 18px 20px; border-radius: 12px; background: var(--sand); color: var(--sand-ink);
+    display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; justify-content: space-between;
+  }
+  .price-note b { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.15rem; }
+
+  /* Why ultrasound */
+  .steps { display: grid; gap: 18px; margin-top: 28px; padding: 0; list-style: none; counter-reset: s; }
+  @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .steps li { display: grid; gap: 8px; padding-top: 14px; border-top: 2px solid var(--accent); }
+  .steps li::before { counter-increment: s; content: "Paso " counter(s); font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  .steps h3 { font-size: 1.15rem; }
+  .steps p { color: var(--ink-2); font-size: .98rem; }
+
+  /* Doctor */
+  .doc { display: grid; gap: 24px; margin-top: 26px; }
+  @media (min-width: 820px) { .doc { grid-template-columns: 300px 1fr; gap: 40px; } }
+  .portrait {
+    aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--radius);
+    background: linear-gradient(160deg, var(--accent-soft), var(--surface)); border: 1px solid var(--line);
+    display: grid; place-items: center; text-align: center; padding: 20px; color: var(--ink-2); font-size: .92rem;
+  }
+  .creds { display: grid; gap: 8px; padding: 0; margin: 16px 0 0; list-style: none; }
+  .creds li { display: flex; gap: 10px; align-items: flex-start; color: var(--ink-2); }
+  .creds svg { width: 18px; height: 18px; color: var(--accent); flex: none; margin-top: 4px; }
+
+  /* FAQ */
+  .faq { margin-top: 22px; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; padding: 16px 0; font-weight: 600; font-size: 1.05rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.4rem; color: var(--accent); flex: none; }
+  details[open] summary::after { content: "–"; }
+  details p { padding-bottom: 18px; color: var(--ink-2); max-width: 62ch; }
+
+  /* Contact */
+  .contact { display: grid; gap: 18px; margin-top: 26px; }
+  @media (min-width: 760px) { .contact { grid-template-columns: 1fr 1fr; gap: 28px; } }
+  .contact-box { padding: 22px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: grid; gap: 10px; align-content: start; }
+  .phone { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .phone code { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.35rem; font-weight: 700; letter-spacing: .04em; user-select: all; }
+  .copy { font: inherit; font-size: .85rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+  .copy:hover { border-color: var(--accent); color: var(--accent); }
+  .social { display: flex; flex-wrap: wrap; gap: 10px; }
+  .social a { font-size: .92rem; font-weight: 600; text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); }
+  .social a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Privacy + footer */
+  .legal { font-size: .9rem; color: var(--ink-2); }
+  .legal details { border: 0; }
+  .legal summary { font-size: .95rem; }
+  .legal p { max-width: 70ch; }
+  footer { padding-block: 26px 10px; border-top: 1px solid var(--line); color: var(--ink-2); font-size: .88rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+
+  /* Sticky WhatsApp bar */
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    background: var(--surface); border-top: 1px solid var(--line);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .bar .t { display: grid; line-height: 1.15; font-size: .9rem; }
+  .bar .t b { font-size: .95rem; }
+  .bar .t span { color: var(--ink-2); font-size: .82rem; }
+  @media (min-width: 820px) { .bar { display: none; } body { padding-bottom: 0; } }
+</style>
+<!-- Etiqueta de Google (gtag) y píxel de Meta: se agregan aquí cuando la página viva en el dominio de LEMASOL. -->
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="LEMASOL, inicio"><b>LEMASOL</b><span>Infiltración de cadera · Querétaro</span></a>
+    <nav class="nav" aria-label="Secciones"><a href="#quien">Para quién es</a><a href="#como">Cómo se hace</a><a href="#doctor">El doctor</a><a href="#preguntas">Preguntas</a><a href="#contacto">Contacto</a></nav>
+    <a class="btn btn-wa btn-sm" data-conv="whatsapp_header" href="https://wa.me/524428508166?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20LEMASOL.%20Quiero%20agendar%20valoraci%C3%B3n%20de%20cadera%20con%20ultrasonido." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg> WhatsApp</a>
+  </div>
+</header>
+<main id="inicio">
+  <div class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Querétaro · Dolor de cadera</p>
+        <h1>Infiltración de cadera guiada por ultrasonido</h1>
+        <p class="lead">La cadera es la articulación más profunda del cuerpo y en Querétaro muy pocos consultorios la infiltran. Soy el Dr. William Madrazo: veo la aguja en tiempo real, esquivo los vasos y dejo el ácido hialurónico exactamente dentro de la articulación. Una aplicación al año.</p>
+        <div class="hero-actions">
+          <a class="btn btn-wa" data-conv="whatsapp_hero" href="https://wa.me/524428508166?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20LEMASOL.%20Quiero%20agendar%20valoraci%C3%B3n%20de%20cadera%20con%20ultrasonido." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg> Agendar valoración de cadera</a>
+          <a class="btn btn-ghost" href="#como">Cómo se hace</a>
+        </div>
+        <div class="proof"><ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Valoración con ultrasonido: $1,000</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Se descuenta del procedimiento</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sales caminando el mismo día</li>
+        </ul></div>
+      </div>
+      <figure class="screen" aria-label="Esquema de profundidad de la articulación de la cadera vista con ultrasonido">
+          <div class="label"><span>Corte anterior · cadera</span><span>Prof. 10 cm</span></div>
+          <svg viewBox="0 0 420 300" role="img" aria-labelledby="depthTitle">
+            <title id="depthTitle">Escala de profundidad: piel, grasa, músculo y articulación de la cadera entre 5 y 8 cm</title>
+            <defs><linearGradient id="gJoint" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC3AE" stop-opacity=".55"/><stop offset="1" stop-color="#4FC3AE" stop-opacity=".15"/></linearGradient></defs>
+            <rect x="60" y="20" width="340" height="14" fill="#DCEBE7" opacity=".85"/>
+            <rect x="60" y="34" width="340" height="50" fill="#DCEBE7" opacity=".28"/>
+            <rect x="60" y="84" width="340" height="66" fill="#DCEBE7" opacity=".16"/>
+            <rect x="60" y="150" width="340" height="75" rx="4" fill="url(#gJoint)" stroke="#4FC3AE" stroke-width="1.5"/>
+            <rect x="60" y="225" width="340" height="55" fill="#DCEBE7" opacity=".08"/>
+            <path d="M150 280 C 170 200, 320 200, 340 280" fill="none" stroke="#DCEBE7" stroke-width="3" opacity=".9"/>
+            <line x1="46" y1="20" x2="46" y2="280" stroke="#DCEBE7" stroke-width="1" opacity=".6"/>
+            <g fill="#DCEBE7" font-family="Source Sans 3, system-ui, sans-serif" font-size="12" text-anchor="end">
+              <line x1="40" y1="20" x2="46" y2="20" stroke="#DCEBE7"/><text x="36" y="24">0</text>
+              <line x1="40" y1="72" x2="46" y2="72" stroke="#DCEBE7"/><text x="36" y="76">2</text>
+              <line x1="40" y1="124" x2="46" y2="124" stroke="#DCEBE7"/><text x="36" y="128">4</text>
+              <line x1="40" y1="176" x2="46" y2="176" stroke="#DCEBE7"/><text x="36" y="180">6</text>
+              <line x1="40" y1="228" x2="46" y2="228" stroke="#DCEBE7"/><text x="36" y="232">8</text>
+              <line x1="40" y1="280" x2="46" y2="280" stroke="#DCEBE7"/><text x="36" y="284">10</text>
+              <text x="36" y="298" font-size="10" opacity=".7">cm</text>
+            </g>
+            <g fill="#DCEBE7" font-family="Source Sans 3, system-ui, sans-serif" font-size="12" opacity=".85">
+              <text x="70" y="31">Piel</text><text x="70" y="64">Grasa</text><text x="70" y="122">Músculo</text><text x="70" y="270" opacity=".7">Cabeza del fémur</text>
+            </g>
+            <g fill="#4FC3AE" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="13" font-weight="700">
+              <text x="248" y="176">Articulación de la cadera</text>
+              <text x="248" y="194" font-family="Source Sans 3, system-ui, sans-serif" font-weight="400" font-size="12">objetivo · 5 a 8 cm</text>
+            </g>
+            <line x1="392" y1="12" x2="215" y2="190" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="215" cy="190" r="5" fill="#4FC3AE" stroke="#FFFFFF" stroke-width="1.5"/>
+            <text x="300" y="118" fill="#FFFFFF" font-family="Source Sans 3, system-ui, sans-serif" font-size="12" text-anchor="end">aguja visible en tiempo real</text>
+            <circle cx="120" cy="118" r="9" fill="none" stroke="#F0B4A8" stroke-width="2"/>
+            <text x="134" y="122" fill="#F0B4A8" font-family="Source Sans 3, system-ui, sans-serif" font-size="11">arteria y nervio femoral</text>
+          </svg>
+          <figcaption class="cap">La guía ecográfica muestra cada capa y la punta de la aguja en pantalla. La infiltración se hace solo cuando la punta está dentro de la articulación.</figcaption>
+        </figure>
+    </div>
+  </div>
+
+  <section id="quien">
+    <div class="wrap">
+      <p class="eyebrow">Para quién es</p>
+      <h2>Si tu cadera te frena, esto es para ti</h2>
+      <div class="split">
+        <div>
+          <ul class="checks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Dolor en la ingle o en la parte lateral de la cadera al caminar, subir escaleras o levantarte de una silla.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Rigidez matutina o dolor al dormir de lado que no mejora con fisioterapia ni analgésicos.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Diagnóstico de artrosis (desgaste) de cadera y quieres posponer o evitar una cirugía de prótesis mientras sea posible.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Ya te infiltraron a ciegas y no sentiste cambio: es frecuente que el producto no llegue a la articulación.</span></li>
+            <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>No es para todos los casos: depende del grado de desgaste. Por eso la valoración se hace con ultrasonido antes de decidir.</span></li>
+          </ul>
+        </div>
+        <ul class="facts">
+          <li class="fact"><b class="num">5–8 cm</b><span>de profundidad hasta la articulación</span></li>
+          <li class="fact"><b class="num">1 al año</b><span>aplicación de ácido hialurónico</span></li>
+          <li class="fact"><b class="num">$1,000</b><span>valoración, se descuenta del procedimiento</span></li>
+        </ul>
+      </div>
+      <p class="muted prose" style="margin-top:22px">El ácido hialurónico lubrica y amortigua la articulación. El objetivo es reducir el dolor y recuperar movilidad; el resultado varía según cada paciente y se revisa en la valoración. El costo del procedimiento se cotiza en tu valoración y te lo damos por WhatsApp.</p>
+    </div>
+  </section>
+
+  <section id="como">
+    <div class="wrap">
+      <p class="eyebrow">Cómo se hace</p>
+      <h2>Lo que cambia cuando ves la aguja</h2>
+      <p class="intro prose">Una infiltración a ciegas se apoya en referencias anatómicas promedio. En la cadera eso falla seguido: la articulación está a 5 u 8 centímetros, cubierta por músculo, y la arteria y el nervio femoral pasan justo enfrente. El ultrasonido lo muestra todo en el momento.</p>
+      <ol class="steps">
+        <li><h3>Valoración con ultrasonido</h3><p>Reviso el estado de la articulación, el líquido y el cartílago, y confirmo si la infiltración te conviene. Si no, te lo digo.</p></li>
+        <li><h3>Aguja a la vista</h3><p>Con anestesia local, la aguja entra siguiendo su punta en pantalla, rodeando la arteria y el nervio en vez de cruzarlos.</p></li>
+        <li><h3>Producto en la articulación</h3><p>Aplico el ácido hialurónico solo cuando la punta está dentro de la cápsula. Sales caminando; el alivio es progresivo en las primeras semanas.</p></li>
+      </ol>
+      <div class="hero-actions"><a class="btn btn-wa" data-conv="whatsapp_como" href="https://wa.me/524428508166?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20LEMASOL.%20Quiero%20agendar%20valoraci%C3%B3n%20de%20cadera%20con%20ultrasonido." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg> Agendar valoración de cadera</a></div>
+    </div>
+  </section>
+
+  <section id="doctor">
+    <div class="wrap">
+      <p class="eyebrow">El doctor</p>
+      <h2>Dr. William Madrazo</h2>
+      <div class="doc">
+        <div class="portrait">Foto del Dr. Madrazo en el consultorio, con el ultrasonido en pantalla</div>
+        <div class="prose">
+          <p class="intro">Médico con enfoque en medicina estética y regenerativa. Trabajo con ultrasonido en consulta desde hace años, primero para tratar dolor articular y de columna, y hoy también para cada procedimiento estético. Explico cada tratamiento con claridad y digo cuándo algo no conviene.</p>
+          <ul class="creds">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="M6 10v6c0 1.5 3 3 6 3s6-1.5 6-3v-6"/></svg><span>Médico egresado de la Universidad de Ciencias Médicas de Holguín</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="M6 10v6c0 1.5 3 3 6 3s6-1.5 6-3v-6"/></svg><span>Diplomado en ecografía y en medicina regenerativa</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="M6 10v6c0 1.5 3 3 6 3s6-1.5 6-3v-6"/></svg><span>Procedimientos estéticos y musculoesqueléticos guiados por ultrasonido en consultorio</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="M6 10v6c0 1.5 3 3 6 3s6-1.5 6-3v-6"/></svg><span>Reconocimiento de excelencia Doctoralia 2022 y 2023</span></li>
+          </ul>
+          <p style="margin-top:18px"><a href="https://www.youtube.com/@DrWilliamMadrazo" target="_blank" rel="noopener">Ver mis videos en YouTube</a>, donde explico cada tratamiento con evidencia y sin tecnicismos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preguntas">
+    <div class="wrap">
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2>Antes de agendar</h2>
+      <div class="faq"><details><summary>¿Cuánto cuesta el procedimiento?</summary><p>Se cotiza en tu valoración según el estado de la articulación y te damos el precio completo por WhatsApp. La valoración cuesta $1,000 y se descuenta del procedimiento.</p></details><details><summary>¿Duele?</summary><p>Se aplica anestesia local en el trayecto y la aguja entra siguiendo la pantalla, sin tantear. La mayoría de los pacientes describe presión más que dolor y sale caminando del consultorio.</p></details><details><summary>¿Cuándo se nota el efecto?</summary><p>El ácido hialurónico actúa de forma progresiva; el alivio suele notarse en las primeras semanas y se revisa en una cita de control. El protocolo es una aplicación al año, según la evolución de cada paciente.</p></details><details><summary>¿Es lo mismo que una infiltración de cortisona?</summary><p>No. La cortisona desinflama de forma rápida pero temporal y no conviene repetirla muchas veces. El ácido hialurónico lubrica y amortigua la articulación y se aplica una vez al año.</p></details><details><summary>¿Necesito radiografías o resonancia?</summary><p>Si ya las tienes, tráelas. Si no, la valoración con ultrasonido suele ser suficiente para decidir; si hace falta otro estudio, te lo indico.</p></details><details><summary>¿Aceptan pagos con tarjeta o a meses?</summary><p>Pregúntanos por WhatsApp las formas de pago vigentes antes de tu cita.</p></details></div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap">
+      <p class="eyebrow">Contacto</p>
+      <h2>Agenda tu valoración</h2>
+      <div class="contact">
+        <div class="contact-box">
+          <span class="eyebrow" style="color:var(--ink-2)">WhatsApp</span>
+          <div class="phone"><code id="waNumber" class="num">442 850 8166</code><button class="copy" id="copyBtn" type="button" aria-label="Copiar número de WhatsApp">Copiar</button></div>
+          <p class="muted">Escríbenos y te respondemos con horarios disponibles y el rango de precio del tratamiento que te interesa.</p>
+          <a class="btn btn-wa" data-conv="whatsapp_contacto" href="https://wa.me/524428508166?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20LEMASOL.%20Quiero%20agendar%20valoraci%C3%B3n%20de%20cadera%20con%20ultrasonido." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg> Abrir WhatsApp</a>
+        </div>
+        <div class="contact-box">
+          <span class="eyebrow" style="color:var(--ink-2)">Consultorio</span>
+          <p><b>Centro Médico LEMASOL</b><br>Camino a los Olvera 205, Col. Colinas del Remanso<br>Santiago de Querétaro, Querétaro</p>
+          <p class="muted">Atención solo con cita previa.</p>
+          <div class="social">
+            <a href="https://www.instagram.com/lemasolqro" target="_blank" rel="noopener">Instagram @lemasolqro</a>
+            <a href="https://www.facebook.com/LEMASOL" target="_blank" rel="noopener">Facebook LEMASOL</a>
+            <a href="https://www.youtube.com/@DrWilliamMadrazo" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="privacidad" class="legal">
+    <div class="wrap">
+      <details>
+        <summary>Aviso de privacidad</summary>
+        <p>Centro Médico LEMASOL, con domicilio en Santiago de Querétaro, Querétaro, es responsable del tratamiento de los datos personales que nos proporcionas por WhatsApp, teléfono o en consulta (nombre, teléfono, correo y datos de salud necesarios para tu atención). Los usamos para agendar y dar seguimiento a tu cita, integrar tu expediente clínico y, si lo autorizas, enviarte información de tratamientos. No compartimos tus datos con terceros salvo obligación legal. Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición (ARCO) escribiendo al WhatsApp 442 850 8166. Este aviso se emite conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Centro Médico LEMASOL · Dr. William Madrazo · Querétaro</span>
+    <span>Los resultados varían según cada paciente. Toda indicación se define en consulta.</span>
+  </div>
+</footer>
+<div class="bar" role="region" aria-label="Agendar por WhatsApp">
+  <div class="t"><b>Valoración de cadera</b><span>Respuesta por WhatsApp</span></div>
+  <a class="btn btn-wa btn-sm" data-conv="whatsapp_barra" href="https://wa.me/524428508166?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20LEMASOL.%20Quiero%20agendar%20valoraci%C3%B3n%20de%20cadera%20con%20ultrasonido." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg> WhatsApp</a>
+</div>
+<script>
+  (function () {
+    document.getElementById('year').textContent = String(new Date().getFullYear());
+    var btn = document.getElementById('copyBtn');
+    var num = document.getElementById('waNumber');
+    function selectNum() {
+      try { var r = document.createRange(); r.selectNodeContents(num); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+    }
+    btn.addEventListener('click', function () {
+      var text = num.textContent.trim();
+      function done(ok) { btn.textContent = ok ? 'Copiado' : 'Selecciona y copia'; setTimeout(function () { btn.textContent = 'Copiar'; }, 1800); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { selectNum(); done(false); });
+      } else { selectNum(); done(false); }
+    });
+    // Conversiones: cada clic a WhatsApp se reporta a Google Ads y Meta cuando sus etiquetas estén instaladas.
+    document.querySelectorAll('a[data-conv]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        var name = a.getAttribute('data-conv');
+        try { if (typeof gtag === 'function') gtag('event', 'clic_whatsapp', { origen: name }); } catch (e) {}
+        try { if (typeof fbq === 'function') fbq('track', 'Contact', { origen: name }); } catch (e) {}
+      });
+    });
+  })();
+</script>
+</body>
+</html>
