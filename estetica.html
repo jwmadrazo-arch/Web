@@ -211,8 +211,18 @@
   .portrait {
     aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--radius);
     background: linear-gradient(160deg, var(--accent-soft), var(--surface)); border: 1px solid var(--line);
-    display: grid; place-items: center; text-align: center; padding: 20px; color: var(--ink-2); font-size: .92rem;
+    overflow: hidden; box-shadow: var(--shadow);
   }
+  .portrait iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+  /* Video strip */
+  .videos { display: grid; gap: 14px; margin-top: 28px; }
+  @media (min-width: 640px) { .videos { grid-template-columns: repeat(3, 1fr); } }
+  .video-card { display: grid; gap: 10px; }
+  .video-card .embed { aspect-ratio: 9 / 16; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--screen); }
+  .video-card .embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .video-card h3 { font-size: 1.02rem; }
+  .video-card p { color: var(--ink-2); font-size: .92rem; }
   .creds { display: grid; gap: 8px; padding: 0; margin: 16px 0 0; list-style: none; }
   .creds li { display: flex; gap: 10px; align-items: flex-start; color: var(--ink-2); }
   .creds svg { width: 18px; height: 18px; color: var(--accent); flex: none; margin-top: 4px; }
@@ -317,6 +327,23 @@
         <div><b>Valoración de medicina estética: $500 MXN</b><br>Se descuenta del procedimiento que elijas. El costo de cada tratamiento se cotiza en tu valoración y te lo damos por WhatsApp.</div>
         <a class="btn btn-wa" data-conv="whatsapp_estetica" href="https://wa.me/524428508166?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20LEMASOL.%20Quiero%20agendar%20valoraci%C3%B3n%20de%20medicina%20est%C3%A9tica." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg> Agendar valoración estética</a>
       </div>
+      <div class="videos">
+        <div class="video-card">
+          <div class="embed"><iframe src="https://www.youtube.com/embed/WYz-ZOrbYak" title="Arrugas de expresión — toxina botulínica en Querétaro" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <h3>Arrugas de expresión</h3>
+          <p>Cómo trabajamos la toxina botulínica por zona.</p>
+        </div>
+        <div class="video-card">
+          <div class="embed"><iframe src="https://www.youtube.com/embed/i7jfPxu-mW0" title="Relleno de labios en Querétaro" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <h3>Labios</h3>
+          <p>Perfilado y volumen con ácido hialurónico.</p>
+        </div>
+        <div class="video-card">
+          <div class="embed"><iframe src="https://www.youtube.com/embed/ux1DG8lCFOg" title="Rinomodelación sin cirugía en Querétaro" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <h3>Nariz y armonización</h3>
+          <p>Rinomodelación sin cirugía con ultrasonido.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -338,7 +365,7 @@
       <p class="eyebrow">El doctor</p>
       <h2>Dr. William Madrazo</h2>
       <div class="doc">
-        <div class="portrait">Foto del Dr. Madrazo en el consultorio, con el ultrasonido en pantalla</div>
+        <div class="portrait"><iframe src="https://www.youtube.com/embed/yEsHb2RHq7c" title="Dr. William Madrazo — Medicina estética en Querétaro" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
         <div class="prose">
           <p class="intro">Médico con enfoque en medicina estética y regenerativa. Trabajo con ultrasonido en consulta desde hace años, primero para tratar dolor articular y de columna, y hoy también para cada procedimiento estético. Explico cada tratamiento con claridad y digo cuándo algo no conviene.</p>
           <ul class="creds">

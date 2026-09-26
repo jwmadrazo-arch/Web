@@ -211,8 +211,9 @@
   .portrait {
     aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--radius);
     background: linear-gradient(160deg, var(--accent-soft), var(--surface)); border: 1px solid var(--line);
-    display: grid; place-items: center; text-align: center; padding: 20px; color: var(--ink-2); font-size: .92rem;
+    overflow: hidden; box-shadow: var(--shadow);
   }
+  .portrait iframe { width: 100%; height: 100%; border: 0; display: block; }
   .creds { display: grid; gap: 8px; padding: 0; margin: 16px 0 0; list-style: none; }
   .creds li { display: flex; gap: 10px; align-items: flex-start; color: var(--ink-2); }
   .creds svg { width: 18px; height: 18px; color: var(--accent); flex: none; margin-top: 4px; }
@@ -377,7 +378,7 @@
       <p class="eyebrow">El doctor</p>
       <h2>Dr. William Madrazo</h2>
       <div class="doc">
-        <div class="portrait">Foto del Dr. Madrazo en el consultorio, con el ultrasonido en pantalla</div>
+        <div class="portrait"><iframe src="https://www.youtube.com/embed/yEsHb2RHq7c" title="Dr. William Madrazo — infiltración de cadera guiada por ultrasonido" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
         <div class="prose">
           <p class="intro">Médico con enfoque en medicina estética y regenerativa. Trabajo con ultrasonido en consulta desde hace años, primero para tratar dolor articular y de columna, y hoy también para cada procedimiento estético. Explico cada tratamiento con claridad y digo cuándo algo no conviene.</p>
           <ul class="creds">
