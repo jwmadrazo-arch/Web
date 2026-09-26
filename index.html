@@ -408,6 +408,7 @@
       a.addEventListener('click', function () {
         var name = a.getAttribute('data-conv');
         try { if (typeof gtag === 'function') gtag('event', 'clic_whatsapp', { origen: name }); } catch (e) {}
+        try { if (typeof gtag === 'function') gtag('event', 'conversion', { 'send_to': 'AW-17722265127/YyIYCPfv4oYdEKec0YJC' }); } catch (e) {}
         try { if (typeof fbq === 'function') fbq('track', 'Contact', { origen: name }); } catch (e) {}
       });
     });
