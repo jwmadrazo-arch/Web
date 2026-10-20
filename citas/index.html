@@ -142,21 +142,18 @@
                 nota: "Consulta de $1,000 con ultrasonido: aparta con $500 y el resto lo paga el día de su cita." },
     hombro:   { titulo: "Valoración de hombro, codo o pie", desc: "Hombro, epicondilitis, fascitis plantar, tendinitis", total: 1000,
                 nota: "Consulta de $1,000 con ultrasonido: aparta con $500 y el resto lo paga el día de su cita." },
-    columna:  { titulo: "Valoración de columna", desc: "Lumbalgia y ciática", total: 1000,
-                nota: "Consulta de $1,000: aparta con $500 y el resto lo paga el día de su cita. Si tiene radiografías o resonancia de columna, tráigalas." },
     // Procedimientos (orden del doctor, 20 oct 2026): mismo horario de una hora; se apartan con $500, sin precio en la página.
     estetica_proc: { titulo: "Procedimiento estético", desc: "", nota: "Se aparta con $500." },
     rodilla_proc:  { titulo: "Infiltración o sesión de tratamiento de rodilla", desc: "", nota: "Se aparta con $500." },
     cadera_proc:   { titulo: "Infiltración o sesión de tratamiento de cadera", desc: "", nota: "Se aparta con $500." },
-    hombro_proc:   { titulo: "Infiltración o sesión de tratamiento de hombro, codo o pie", desc: "", nota: "Se aparta con $500." },
-    columna_proc:  { titulo: "Infiltración o sesión de tratamiento de columna", desc: "", nota: "Se aparta con $500." }
+    hombro_proc:   { titulo: "Infiltración o sesión de tratamiento de hombro, codo o pie", desc: "", nota: "Se aparta con $500." }
+
   };
   // Zonas del bloque articular, en el orden del doctor (para medir cada campaña por zona)
   var ZONAS = [
     { id: "rodilla", titulo: "Rodilla", desc: "" },
     { id: "cadera", titulo: "Cadera", desc: "" },
-    { id: "hombro", titulo: "Hombro, codo o pie", desc: "Epicondilitis, fascitis plantar, tendinitis" },
-    { id: "columna", titulo: "Columna", desc: "Lumbalgia y ciática" }
+    { id: "hombro", titulo: "Hombro, codo o pie", desc: "Epicondilitis, fascitis plantar, tendinitis" }
   ];
   var DSEM = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
   var DLARGO = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
@@ -171,6 +168,8 @@
   function fecha(iso) { var p = iso.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function fLargo(iso) { var d = fecha(iso); return DLARGO[d.getDay()] + " " + d.getDate() + " de " + MES[d.getMonth()]; }
   function h12(h) { var p = h.split(":"), hh = +p[0]; return (hh % 12 || 12) + ":" + p[1] + (hh < 12 ? " a.m." : " p.m."); }
+  // La primera pantalla sin perder la campaña de origen (?o=), para la medición
+  function inicio() { return "./" + (st.origen ? "?o=" + encodeURIComponent(st.origen) : ""); }
   function waLink(txt) { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt || "Hola, quiero agendar una valoración con el Dr. William Madrazo."); }
   document.getElementById("wa-pie").href = waLink();
   function barras() { document.querySelectorAll(".pasos span").forEach(function (s, i) { s.classList.toggle("on", i <= Math.min(st.paso, 2)); }); }
@@ -221,7 +220,7 @@
         '<div class="bloque" role="group" aria-labelledby="b-est"><h3 id="b-est">Medicina estética facial</h3>' +
         "<p>Labios, nariz, líneas de expresión y armonización</p>" +
         op("estetica", "Valoración estética", "$500") + op("estetica_proc", "Procedimiento estético", "Se aparta con $500") + "</div>" +
-        '<div class="bloque" role="group" aria-labelledby="b-art"><h3 id="b-art">Dolor articular y columna</h3>' +
+        '<div class="bloque" role="group" aria-labelledby="b-art"><h3 id="b-art">Dolor articular</h3>' +
         "<p>Infiltraciones guiadas por ultrasonido</p>" +
         op("", "Valoración con ultrasonido", "$1,000, aparta con $500", "val") +
         op("", "Infiltración o sesión de tratamiento", "Se aparta con $500", "proc") + "</div></div></section>";
@@ -238,7 +237,7 @@
         $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar tipo de cita</button><h2>Por ahora no hay horarios en línea</h2>' +
           '<p class="nota">La agenda de las próximas dos semanas está llena. Escríbanos y le buscamos un espacio.</p>' +
           '<a class="btn wa" href="' + waLink("Hola, quiero agendar " + s.titulo.toLowerCase() + " y no encontré horario en la página.") + '" target="_blank" rel="noopener">Escribir por WhatsApp</a></section>';
-        document.getElementById("atras").onclick = function () { ir(0); };
+        document.getElementById("atras").onclick = function () { st.zonaDe = null; ir(0); };
         return;
       }
       if (!st.dia || !dias.some(function (x) { return x.fecha === st.dia; })) st.dia = dias[0].fecha;
@@ -254,7 +253,7 @@
         '</div>' + (st.aviso ? '<p class="error" role="alert">' + esc(st.aviso) + "</p>" : "") +
         '<p class="nota">Solo aparecen los horarios libres. Cada cita dura una hora.</p>' +
         '<button class="btn" id="seguir" aria-disabled="' + !st.hora + '">Continuar</button></section>';
-      document.getElementById("atras").onclick = function () { ir(0); };
+      document.getElementById("atras").onclick = function () { st.zonaDe = null; ir(0); };
       $v.querySelectorAll(".dia").forEach(function (b) { b.onclick = function () { if (b.disabled) return; st.dia = b.dataset.f; st.hora = null; pintar(); }; });
       $v.querySelectorAll(".hora").forEach(function (b) { b.onclick = function () { st.hora = b.dataset.h; pintar(); }; });
       document.getElementById("seguir").onclick = function () { if (st.hora) { st.aviso = ""; ir(2); } };
@@ -423,12 +422,15 @@
         if (e.estado === "apartado" && e.rechazo) {
           $v.innerHTML = '<section class="card"><h2>El pago no se completó</h2><p class="nota">' + esc(e.rechazo) +
             ' Su horario sigue guardado.</p><button class="btn" id="otra">Intentar con otra tarjeta</button></section>';
-          document.getElementById("otra").onclick = function () { st.ref = ref; ir(2); };
+          document.getElementById("otra").onclick = function () {
+            if (!st.datos || !st.svc || !st.dia) { location.href = inicio(); return; }  // regresó de Mercado Pago: empieza de nuevo
+            st.ref = ref; ir(2);
+          };
           return;
         }
         if (e.estado === "vencido" || e.estado === "reemplazado" || e.estado === "error") {
           $v.innerHTML = '<section class="card"><h2>El pago no se completó</h2><p class="nota">No se hizo ningún cargo para este horario. Puede volver a elegir su cita.</p>' +
-            '<a class="btn" href="./">Elegir horario otra vez</a></section>';
+            '<a class="btn" href="' + esc(inicio()) + '">Elegir horario otra vez</a></section>';
           return;
         }
         if (++intentos < max) { setTimeout(revisar, 3000); return; }
