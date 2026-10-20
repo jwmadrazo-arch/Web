@@ -137,7 +137,7 @@
   var DLARGO = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   var MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
   var params = new URLSearchParams(location.search);
-  var st = { paso: 0, datos: null, svc: params.get("s") || null, dia: null, hora: null, nombre: "", tel: "", ref: null, clave: "",
+  var st = { paso: 0, datos: null, svc: params.get("s") || null, dia: null, hora: null, nombre: "", tel: "", acepto: false, ref: null, clave: "",
              origen: (params.get("o") || params.get("utm_campaign") || params.get("utm_source") || "").slice(0, 40) };
   var $v = document.getElementById("vista");
 
@@ -198,12 +198,13 @@
             '"><small>' + DSEM[f.getDay()] + "</small><b>" + f.getDate() + "</b><small>" + MES[f.getMonth()].slice(0, 3) + "</small></button>";
         }).join("") + '</div><p class="k">' + esc(fLargo(st.dia)) + '</p><div class="horas" role="group" aria-label="Horas disponibles">' +
         horas.map(function (h) { return '<button class="hora" data-h="' + h + '" aria-pressed="' + (st.hora === h) + '">' + h12(h) + "</button>"; }).join("") +
-        '</div><p class="nota">Solo aparecen los horarios libres. Cada cita dura una hora.</p>' +
+        '</div>' + (st.aviso ? '<p class="error" role="alert">' + esc(st.aviso) + "</p>" : "") +
+        '<p class="nota">Solo aparecen los horarios libres. Cada cita dura una hora.</p>' +
         '<button class="btn" id="seguir" aria-disabled="' + !st.hora + '">Continuar</button></section>';
       document.getElementById("atras").onclick = function () { ir(0); };
       $v.querySelectorAll(".dia").forEach(function (b) { b.onclick = function () { if (b.disabled) return; st.dia = b.dataset.f; st.hora = null; pintar(); }; });
       $v.querySelectorAll(".hora").forEach(function (b) { b.onclick = function () { st.hora = b.dataset.h; pintar(); }; });
-      document.getElementById("seguir").onclick = function () { if (st.hora) ir(2); };
+      document.getElementById("seguir").onclick = function () { if (st.hora) { st.aviso = ""; ir(2); } };
       var sel = $v.querySelector('.dia[aria-pressed="true"]'); if (sel) sel.scrollIntoView({ block: "nearest", inline: "center" });
     }
     if (st.paso === 2) {
@@ -217,12 +218,13 @@
         '<label for="nombre">Nombre completo<input type="text" id="nombre" autocomplete="name" value="' + esc(st.nombre) + '"></label>' +
         '<label for="tel">WhatsApp (10 dígitos)<input type="tel" id="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" value="' + esc(st.tel) + '"></label>' +
         '<label class="oculto" aria-hidden="true">Sitio<input type="text" id="sitio" tabindex="-1" autocomplete="off"></label>' +
+        '<label class="acepto" for="acepto"><input type="checkbox" id="acepto"' + (st.acepto ? " checked" : "") +
+        '><span>Acepto el <a href="/#privacidad" target="_blank" rel="noopener">aviso de privacidad</a> y que me escriban por WhatsApp sobre mi cita.</span></label>' +
         (enPagina ? '<div id="tarjeta" class="tarjeta"><div class="cargando"><i></i>Cargando el pago seguro…</div></div>' : "") +
         '<p class="error" id="err" role="alert" hidden></p>' +
         '<button class="btn" type="submit" id="pagar">' + (enPagina ? "Pagar " + money(d.anticipo) + " y apartar mi cita" : "Pagar " + money(d.anticipo) + " con Mercado Pago") + "</button>" +
         '<p class="nota">' + (enPagina ? "Tarjeta de débito o crédito. Pago seguro con Mercado Pago, sin crear cuenta." :
           "Tarjeta de débito, crédito o transferencia. Le guardamos el horario " + d.apartado_min + " minutos mientras paga.") +
-        " Al pagar acepta el <a href=\"/#privacidad\" target=\"_blank\" rel=\"noopener\">aviso de privacidad</a> y que le escribamos por WhatsApp sobre su cita." +
         " Si cancela con menos de 24 horas de aviso, el anticipo no se reembolsa.</p>" +
         '<p class="alterno">¿Prefiere transferencia o depósito en OXXO? <a href="' +
         waLink("Hola, quiero agendar " + s.titulo.toLowerCase() + " el " + fLargo(st.dia) + " a las " + h12(st.hora) + " y pagar por transferencia u OXXO.") +
@@ -277,10 +279,11 @@
 
   // Aparta el horario (una sola vez por horario y teléfono; si el pago se rechaza, se reintenta con el mismo).
   function apartar(enPagina) {
-    var clave = [st.svc, st.dia, st.hora, st.tel].join("|");
+    var clave = [st.svc, st.dia, st.hora, st.tel, st.nombre].join("|");
     if (enPagina && st.ref && st.clave === clave) return Promise.resolve(st.ref);
     return post("/citas/apartar", { servicio: st.svc, fecha: st.dia, hora: st.hora, nombre: st.nombre, telefono: st.tel,
-                                    origen: st.origen, sitio: st.sitio || "", sin_link: enPagina }).then(function (res) {
+                                    origen: st.origen, sitio: st.sitio || "", sin_link: enPagina,
+                                    reemplaza: st.ref || "" }).then(function (res) {
       if (!res.ok) throw new Falla((res.j && res.j.detail) || "No se pudo apartar el horario. Intente de nuevo.", res.status);
       if (!enPagina) { location.href = res.j.link; return null; }
       st.ref = res.j.ref; st.clave = clave;
@@ -294,7 +297,9 @@
     st.nombre = document.getElementById("nombre").value.trim().replace(/\s+/g, " ");
     st.tel = document.getElementById("tel").value.replace(/\D/g, "").replace(/^52(?=\d{10}$)/, "");
     st.sitio = document.getElementById("sitio").value;
+    st.acepto = document.getElementById("acepto").checked;
     var m = st.nombre.length < 3 ? "Escriba su nombre completo." : st.tel.length !== 10 ? "Su WhatsApp debe tener 10 dígitos." :
+            !st.acepto ? "Para continuar, acepte el aviso de privacidad." :
             enPagina && !brick ? "Espere un momento: se está cargando el pago con tarjeta." : "";
     if (m) { err.textContent = m; err.hidden = false; return; }
     var texto = b.textContent;
@@ -313,7 +318,7 @@
       if (!res) return;
       if (!res.ok) throw new Falla((res.j && res.j.detail) || "No se pudo cobrar. Intente de nuevo.", res.status);
       var e = res.j;
-      if (e.estado === "rechazado") { throw new Falla(e.mensaje); }
+      if (e.estado === "rechazado") { montarTarjeta(); throw new Falla(e.mensaje); }
       if (e.estado === "3ds") { reto(st.ref, e.url, e.creq); return; }
       esperar(st.ref);
     }).catch(function (f) {
@@ -322,8 +327,9 @@
                         : "Revise los datos de su tarjeta.";
       err.hidden = false;
       if (f && f.status === 409) {  // el horario se ocupó o se liberó: recargar horarios y regresar a elegir
-        st.ref = null;
-        fetch(API + "/citas/horarios").then(function (r) { return r.json(); }).then(function (d) { st.datos = d; st.hora = null; desmontar(); ir(1); });
+        st.ref = null; st.aviso = f.texto;
+        fetch(API + "/citas/horarios").then(function (r) { return r.json(); }).then(function (d) { st.datos = d; })
+          .catch(function () {}).then(function () { st.hora = null; desmontar(); ir(1); });
       }
     });
   }
@@ -348,7 +354,7 @@
   // silencioso: no pinta "Confirmando…" (el reto del banco sigue en pantalla); al confirmar llama a alTerminar.
   function esperar(ref, conReto, silencioso, alTerminar) {
     st.paso = 2; barras();
-    var intentos = 0, max = conReto ? 100 : 20;
+    var intentos = 0, max = conReto ? 100 : 40;
     if (!silencioso) cargando("Confirmando su pago…");
     (function revisar() {
       if (silencioso && silencioso()) return;  // el reto terminó: ya hay otra espera en curso
@@ -362,7 +368,7 @@
           return;
         }
         if (e.estado === "apartado" && e.rechazo) {
-          $v.innerHTML = '<section class="card"><h2>El banco no aprobó el pago</h2><p class="nota">' + esc(e.rechazo) +
+          $v.innerHTML = '<section class="card"><h2>El pago no se completó</h2><p class="nota">' + esc(e.rechazo) +
             ' No se hizo ningún cargo y su horario sigue guardado.</p><button class="btn" id="otra">Intentar con otra tarjeta</button></section>';
           document.getElementById("otra").onclick = function () { st.ref = ref; ir(2); };
           return;
@@ -373,7 +379,7 @@
           return;
         }
         if (++intentos < max) { setTimeout(revisar, 3000); return; }
-        if (silencioso) return;
+        if (silencioso) { if (alTerminar) alTerminar(); return; }
         $v.innerHTML = '<section class="card"><h2>Su pago está en proceso</h2><p class="nota">En cuanto se confirme, su cita queda agendada. No necesita pagar otra vez.</p>' +
           '<a class="btn wa" href="' + waLink("Hola, acabo de pagar mi anticipo en la página de citas.") + '" target="_blank" rel="noopener">¿Dudas? Escríbanos</a></section>';
       }).catch(function () {
