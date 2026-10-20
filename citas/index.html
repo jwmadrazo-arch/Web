@@ -92,6 +92,10 @@
   .cargando { display: flex; gap: 10px; align-items: center; color: var(--ink-2); }
   .cargando i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: g .8s linear infinite; }
   @keyframes g { to { transform: rotate(360deg); } }
+  .tarjeta { min-height: 120px; }
+  .reto { width: 100%; height: 560px; border: 0; border-radius: 10px; background: #fff; }
+  .alterno { font-size: 14px; color: var(--ink-2); margin: 0; text-align: center; }
+  .alterno a { color: var(--accent); font-weight: 600; }
   footer { text-align: center; font-size: 14px; color: var(--ink-2); }
   footer a { color: var(--ink-2); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
@@ -104,7 +108,7 @@
     <h1>Agenda tu cita</h1>
     <p class="sub">Medicina estética y regenerativa guiada por ultrasonido · Querétaro</p>
   </header>
-  <div class="pasos" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="pasos" aria-hidden="true"><span></span><span></span><span></span></div>
   <main id="vista" aria-live="polite"></main>
   <footer>
     <p>¿Dudas antes de agendar? <a id="wa-pie" href="#">Escríbenos por WhatsApp</a></p>
@@ -133,7 +137,7 @@
   var DLARGO = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   var MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
   var params = new URLSearchParams(location.search);
-  var st = { paso: 0, datos: null, svc: params.get("s") || null, dia: null, hora: null, nombre: "", tel: "", acepto: false,
+  var st = { paso: 0, datos: null, svc: params.get("s") || null, dia: null, hora: null, nombre: "", tel: "", ref: null, clave: "",
              origen: (params.get("o") || params.get("utm_campaign") || params.get("utm_source") || "").slice(0, 40) };
   var $v = document.getElementById("vista");
 
@@ -144,7 +148,7 @@
   function h12(h) { var p = h.split(":"), hh = +p[0]; return (hh % 12 || 12) + ":" + p[1] + (hh < 12 ? " a.m." : " p.m."); }
   function waLink(txt) { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt || "Hola, quiero agendar una valoración con el Dr. William Madrazo."); }
   document.getElementById("wa-pie").href = waLink();
-  function barras() { document.querySelectorAll(".pasos span").forEach(function (s, i) { s.classList.toggle("on", i <= Math.min(st.paso, 3)); }); }
+  function barras() { document.querySelectorAll(".pasos span").forEach(function (s, i) { s.classList.toggle("on", i <= Math.min(st.paso, 2)); }); }
   function ir(n) { st.paso = n; pintar(); window.scrollTo({ top: 0, behavior: "smooth" }); }
   function cargando(t) { $v.innerHTML = '<section class="card"><div class="cargando"><i></i>' + esc(t) + "</div></section>"; }
   function falla(t) {
@@ -167,7 +171,7 @@
     barras();
     var d = st.datos, s = st.svc && INFO[st.svc];
     if (st.paso === 0) {
-      $v.innerHTML = '<section class="card"><p class="k">Paso 1 de 4</p><h2>¿Qué cita necesita?</h2><div class="lista">' +
+      $v.innerHTML = '<section class="card"><p class="k">Paso 1 de 3</p><h2>¿Qué cita necesita?</h2><div class="lista">' +
         d.servicios.map(function (x) {
           var i = INFO[x.id] || { titulo: x.nombre, desc: "", total: d.anticipo };
           return '<button class="svc" data-id="' + esc(x.id) + '"><span><b>' + esc(i.titulo) + "</b><small>" + esc(i.desc) +
@@ -186,7 +190,7 @@
       }
       if (!st.dia || !dias.some(function (x) { return x.fecha === st.dia; })) st.dia = dias[0].fecha;
       var horas = (d.dias.filter(function (x) { return x.fecha === st.dia; })[0] || { horas: [] }).horas;
-      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar tipo de cita</button><p class="k">Paso 2 de 4 · ' + esc(s.titulo) +
+      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar tipo de cita</button><p class="k">Paso 2 de 3 · ' + esc(s.titulo) +
         '</p><h2>Elija día y hora</h2><div class="dias" role="group" aria-label="Días disponibles">' +
         d.dias.map(function (x) {
           var f = fecha(x.fecha);
@@ -203,73 +207,164 @@
       var sel = $v.querySelector('.dia[aria-pressed="true"]'); if (sel) sel.scrollIntoView({ block: "nearest", inline: "center" });
     }
     if (st.paso === 2) {
-      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar horario</button><p class="k">Paso 3 de 4</p><h2>Sus datos</h2>' +
+      var enPagina = !!(d.mp_public_key && window.Promise);
+      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar horario</button><p class="k">Paso 3 de 3</p>' +
+        "<h2>Sus datos y su anticipo</h2>" +
+        '<div class="resumen"><div><span>Cita</span><b>' + esc(s.titulo) + "</b></div><div><span>Día y hora</span><b>" + esc(fLargo(st.dia)) +
+        " · " + h12(st.hora) + '</b></div><div class="total"><span>Anticipo hoy</span><b>' + money(d.anticipo) + "</b></div></div>" +
+        '<p class="nota">' + esc(s.nota) + "</p>" +
         '<form id="f" class="lista" novalidate>' +
         '<label for="nombre">Nombre completo<input type="text" id="nombre" autocomplete="name" value="' + esc(st.nombre) + '"></label>' +
         '<label for="tel">WhatsApp (10 dígitos)<input type="tel" id="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" value="' + esc(st.tel) + '"></label>' +
         '<label class="oculto" aria-hidden="true">Sitio<input type="text" id="sitio" tabindex="-1" autocomplete="off"></label>' +
-        '<label class="acepto" for="acepto"><input type="checkbox" id="acepto"' + (st.acepto ? " checked" : "") +
-        '><span>Acepto el <a href="/#privacidad" target="_blank" rel="noopener">aviso de privacidad</a> y que me contacten por WhatsApp sobre mi cita.</span></label>' +
-        '<p class="error" id="err" hidden></p><button class="btn" type="submit">Continuar al anticipo</button></form></section>';
-      document.getElementById("atras").onclick = function () { ir(1); };
-      document.getElementById("f").onsubmit = function (e) {
-        e.preventDefault();
-        st.nombre = document.getElementById("nombre").value.trim().replace(/\s+/g, " ");
-        st.tel = document.getElementById("tel").value.replace(/\D/g, "").replace(/^52(?=\d{10}$)/, "");
-        st.acepto = document.getElementById("acepto").checked;
-        st.sitio = document.getElementById("sitio").value;
-        var err = document.getElementById("err");
-        var m = st.nombre.length < 3 ? "Escriba su nombre completo." : st.tel.length !== 10 ? "Su WhatsApp debe tener 10 dígitos." :
-                !st.acepto ? "Para continuar, acepte el aviso de privacidad." : "";
-        if (m) { err.textContent = m; err.hidden = false; return; }
-        ir(3);
-      };
-    }
-    if (st.paso === 3) {
-      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Corregir datos</button><p class="k">Paso 4 de 4</p><h2>Aparte su cita con el anticipo</h2>' +
-        '<div class="resumen"><div><span>Cita</span><b>' + esc(s.titulo) + "</b></div><div><span>Día</span><b>" + esc(fLargo(st.dia)) +
-        "</b></div><div><span>Hora</span><b>" + h12(st.hora) + "</b></div><div><span>Paciente</span><b>" + esc(st.nombre) +
-        '</b></div><div class="total"><span>Anticipo hoy</span><b>' + money(d.anticipo) + "</b></div></div>" +
-        '<p class="nota">' + esc(s.nota) + "</p>" +
-        '<p class="error" id="err" hidden></p><button class="btn" id="pagar">Pagar ' + money(d.anticipo) + " con Mercado Pago</button>" +
-        '<p class="nota">Tarjeta de débito, crédito o transferencia. Le guardamos el horario ' + d.apartado_min + ' minutos mientras paga. ' +
-        "Si cancela con menos de 24 horas de aviso, el anticipo no se reembolsa. ¿Prefiere pagar en OXXO? " +
-        '<a href="' + waLink("Hola, quiero agendar " + s.titulo.toLowerCase() + " el " + fLargo(st.dia) + " a las " + h12(st.hora) + " y pagar en OXXO.") +
-        '" target="_blank" rel="noopener">Escríbanos</a>.</p></section>';
-      document.getElementById("atras").onclick = function () { ir(2); };
-      document.getElementById("pagar").onclick = pagar;
+        (enPagina ? '<div id="tarjeta" class="tarjeta"><div class="cargando"><i></i>Cargando el pago seguro…</div></div>' : "") +
+        '<p class="error" id="err" role="alert" hidden></p>' +
+        '<button class="btn" type="submit" id="pagar">' + (enPagina ? "Pagar " + money(d.anticipo) + " y apartar mi cita" : "Pagar " + money(d.anticipo) + " con Mercado Pago") + "</button>" +
+        '<p class="nota">' + (enPagina ? "Tarjeta de débito o crédito. Pago seguro con Mercado Pago, sin crear cuenta." :
+          "Tarjeta de débito, crédito o transferencia. Le guardamos el horario " + d.apartado_min + " minutos mientras paga.") +
+        " Al pagar acepta el <a href=\"/#privacidad\" target=\"_blank\" rel=\"noopener\">aviso de privacidad</a> y que le escribamos por WhatsApp sobre su cita." +
+        " Si cancela con menos de 24 horas de aviso, el anticipo no se reembolsa.</p>" +
+        '<p class="alterno">¿Prefiere transferencia o depósito en OXXO? <a href="' +
+        waLink("Hola, quiero agendar " + s.titulo.toLowerCase() + " el " + fLargo(st.dia) + " a las " + h12(st.hora) + " y pagar por transferencia u OXXO.") +
+        '" target="_blank" rel="noopener">Escríbanos por WhatsApp</a></p></form></section>';
+      document.getElementById("atras").onclick = function () { desmontar(); ir(1); };
+      document.getElementById("f").onsubmit = function (e) { e.preventDefault(); pagar(enPagina); };
+      if (enPagina) montarTarjeta();
     }
   }
 
-  function pagar() {
-    var b = document.getElementById("pagar"), err = document.getElementById("err");
-    if (b.getAttribute("aria-disabled") === "true") return;
-    b.setAttribute("aria-disabled", "true"); b.textContent = "Abriendo el pago…"; err.hidden = true;
-    fetch(API + "/citas/apartar", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ servicio: st.svc, fecha: st.dia, hora: st.hora, nombre: st.nombre, telefono: st.tel, origen: st.origen, sitio: st.sitio || "" })
-    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; }); }).then(function (res) {
-      if (res.ok && res.j.link) { location.href = res.j.link; return; }
-      err.textContent = (res.j && res.j.detail) || "No se pudo abrir el pago. Intente de nuevo.";
-      err.hidden = false; b.removeAttribute("aria-disabled"); b.textContent = "Pagar " + money(st.datos.anticipo) + " con Mercado Pago";
-      if (res.status === 409) {  // el horario se ocupó: recargar horarios y regresar a elegir
-        fetch(API + "/citas/horarios").then(function (r) { return r.json(); }).then(function (d) { st.datos = d; st.hora = null; ir(1); });
-      }
-    }).catch(function () {
-      err.textContent = "No hay conexión con la agenda. Revise su internet e intente de nuevo.";
-      err.hidden = false; b.removeAttribute("aria-disabled"); b.textContent = "Pagar " + money(st.datos.anticipo) + " con Mercado Pago";
+  // ---- Formulario de tarjeta de Mercado Pago dentro de la página (Card Payment Brick, SDK JS v2) ----
+  var brick = null, sdk = null;
+  function cargarSdk() {
+    if (sdk) return sdk;
+    sdk = new Promise(function (ok, mal) {
+      if (window.MercadoPago) { ok(); return; }
+      var t = document.createElement("script");
+      t.src = "https://sdk.mercadopago.com/js/v2"; t.onload = ok; t.onerror = mal;
+      document.head.appendChild(t);
+    });
+    return sdk;
+  }
+  function desmontar() { if (brick) { try { brick.unmount(); } catch (e) {} brick = null; } }
+  function montarTarjeta() {
+    desmontar();
+    var oscuro = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+    cargarSdk().then(function () {
+      var mp = new window.MercadoPago(st.datos.mp_public_key, { locale: "es-MX" });
+      return mp.bricks().create("cardPayment", "tarjeta", {
+        initialization: { amount: st.datos.anticipo },
+        customization: {
+          visual: { hidePaymentButton: true, hideFormTitle: true, style: { theme: oscuro ? "dark" : "default" } },
+          paymentMethods: { minInstallments: 1, maxInstallments: 1 }
+        },
+        callbacks: {
+          onReady: function () {},
+          onSubmit: function () { return Promise.resolve(); },
+          onError: function (e) { if (window.console) console.warn("Mercado Pago", e); }
+        }
+      });
+    }).then(function (c) { brick = c; }).catch(function () {
+      var cont = document.getElementById("tarjeta");
+      if (cont) cont.innerHTML = '<p class="error">No se pudo cargar el pago con tarjeta. Revise su internet o escríbanos por WhatsApp.</p>';
     });
   }
 
-  // Regreso de Mercado Pago: ?ref=… → se espera la confirmación del pago.
-  function regreso(ref) {
-    st.paso = 4; barras();
-    var intentos = 0;
-    cargando("Confirmando su pago…");
+  function post(ruta, cuerpo) {
+    return fetch(API + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, status: r.status, j: j }; }); });
+  }
+  function Falla(texto, status) { this.texto = texto; this.status = status; }
+
+  // Aparta el horario (una sola vez por horario y teléfono; si el pago se rechaza, se reintenta con el mismo).
+  function apartar(enPagina) {
+    var clave = [st.svc, st.dia, st.hora, st.tel].join("|");
+    if (enPagina && st.ref && st.clave === clave) return Promise.resolve(st.ref);
+    return post("/citas/apartar", { servicio: st.svc, fecha: st.dia, hora: st.hora, nombre: st.nombre, telefono: st.tel,
+                                    origen: st.origen, sitio: st.sitio || "", sin_link: enPagina }).then(function (res) {
+      if (!res.ok) throw new Falla((res.j && res.j.detail) || "No se pudo apartar el horario. Intente de nuevo.", res.status);
+      if (!enPagina) { location.href = res.j.link; return null; }
+      st.ref = res.j.ref; st.clave = clave;
+      return st.ref;
+    });
+  }
+
+  function pagar(enPagina) {
+    var b = document.getElementById("pagar"), err = document.getElementById("err");
+    if (b.getAttribute("aria-disabled") === "true") return;
+    st.nombre = document.getElementById("nombre").value.trim().replace(/\s+/g, " ");
+    st.tel = document.getElementById("tel").value.replace(/\D/g, "").replace(/^52(?=\d{10}$)/, "");
+    st.sitio = document.getElementById("sitio").value;
+    var m = st.nombre.length < 3 ? "Escriba su nombre completo." : st.tel.length !== 10 ? "Su WhatsApp debe tener 10 dígitos." :
+            enPagina && !brick ? "Espere un momento: se está cargando el pago con tarjeta." : "";
+    if (m) { err.textContent = m; err.hidden = false; return; }
+    var texto = b.textContent;
+    function listoBoton() { b.removeAttribute("aria-disabled"); b.textContent = texto; }
+    b.setAttribute("aria-disabled", "true"); b.textContent = enPagina ? "Procesando su pago…" : "Abriendo el pago…"; err.hidden = true;
+    var tarjeta = null;
+    (enPagina ? brick.getFormData() : Promise.resolve(null)).then(function (fd) {
+      if (enPagina && (!fd || !fd.token)) throw new Falla("Revise los datos de su tarjeta.");
+      tarjeta = fd;
+      return apartar(enPagina);
+    }).then(function (ref) {
+      if (!enPagina || !ref) return null;
+      return post("/citas/pagar", { ref: ref, token: tarjeta.token, payment_method_id: tarjeta.payment_method_id,
+                                    issuer_id: tarjeta.issuer_id, payer: { email: (tarjeta.payer && tarjeta.payer.email) || "" } });
+    }).then(function (res) {
+      if (!res) return;
+      if (!res.ok) throw new Falla((res.j && res.j.detail) || "No se pudo cobrar. Intente de nuevo.", res.status);
+      var e = res.j;
+      if (e.estado === "rechazado") { throw new Falla(e.mensaje); }
+      if (e.estado === "3ds") { reto(st.ref, e.url, e.creq); return; }
+      esperar(st.ref);
+    }).catch(function (f) {
+      listoBoton();
+      err.textContent = f instanceof Falla ? f.texto : f instanceof TypeError ? "No hay conexión con la agenda. Revise su internet e intente de nuevo."
+                        : "Revise los datos de su tarjeta.";
+      err.hidden = false;
+      if (f && f.status === 409) {  // el horario se ocupó o se liberó: recargar horarios y regresar a elegir
+        st.ref = null;
+        fetch(API + "/citas/horarios").then(function (r) { return r.json(); }).then(function (d) { st.datos = d; st.hora = null; desmontar(); ir(1); });
+      }
+    });
+  }
+
+  // 3-D Secure: el banco le pide confirmar que es usted (código por SMS o en la app del banco), aquí mismo.
+  function reto(ref, url, creq) {
+    desmontar();
+    $v.innerHTML = '<section class="card"><h2>Confirme el pago con su banco</h2><p class="nota">Su banco le pide confirmar que es usted. ' +
+      'Siga las indicaciones; su horario sigue guardado.</p><iframe class="reto" name="reto-banco" id="reto-banco" title="Confirmación de su banco"></iframe></section>';
+    var marco = document.getElementById("reto-banco"), doc = marco.contentWindow.document;
+    var f = doc.createElement("form"); f.method = "post"; f.action = url;
+    var c = doc.createElement("input"); c.type = "hidden"; c.name = "creq"; c.value = creq; f.appendChild(c);
+    doc.body.appendChild(f); f.submit();
+    var hecho = false;
+    function seguir() { if (hecho) return; hecho = true; window.removeEventListener("message", oir); esperar(ref, true); }
+    function oir(ev) { if (ev && ev.data && ev.data.status === "COMPLETE") seguir(); }
+    window.addEventListener("message", oir);
+    esperar(ref, true, function () { return hecho; }, seguir);
+  }
+
+  // Espera la confirmación del pago (regreso de Mercado Pago, pago con tarjeta o después de 3-D Secure).
+  // silencioso: no pinta "Confirmando…" (el reto del banco sigue en pantalla); al confirmar llama a alTerminar.
+  function esperar(ref, conReto, silencioso, alTerminar) {
+    st.paso = 2; barras();
+    var intentos = 0, max = conReto ? 100 : 20;
+    if (!silencioso) cargando("Confirmando su pago…");
     (function revisar() {
+      if (silencioso && silencioso()) return;  // el reto terminó: ya hay otra espera en curso
       fetch(API + "/citas/estado/" + encodeURIComponent(ref)).then(function (r) { if (!r.ok) throw r; return r.json(); }).then(function (e) {
+        var fin = e.estado === "agendado" || e.estado === "pagado sin cita" || e.estado === "vencido" || e.estado === "reemplazado" ||
+                  e.estado === "error" || (e.estado === "apartado" && e.rechazo);
+        if (fin && silencioso && alTerminar) { alTerminar(); return; }
         if (e.estado === "agendado") { listo(e); return; }
         if (e.estado === "pagado sin cita") {
           $v.innerHTML = '<section class="card"><h2>Recibimos su pago</h2><p class="nota">Su horario se ocupó mientras pagaba. Su anticipo está seguro: en breve le escribimos por WhatsApp para darle otro horario.</p></section>';
+          return;
+        }
+        if (e.estado === "apartado" && e.rechazo) {
+          $v.innerHTML = '<section class="card"><h2>El banco no aprobó el pago</h2><p class="nota">' + esc(e.rechazo) +
+            ' No se hizo ningún cargo y su horario sigue guardado.</p><button class="btn" id="otra">Intentar con otra tarjeta</button></section>';
+          document.getElementById("otra").onclick = function () { st.ref = ref; ir(2); };
           return;
         }
         if (e.estado === "vencido" || e.estado === "reemplazado" || e.estado === "error") {
@@ -277,12 +372,13 @@
             '<a class="btn" href="./">Elegir horario otra vez</a></section>';
           return;
         }
-        if (++intentos < 20) { setTimeout(revisar, 3000); return; }
-        $v.innerHTML = '<section class="card"><h2>Su pago está en proceso</h2><p class="nota">En cuanto Mercado Pago lo confirme, su cita queda agendada y le avisamos por WhatsApp. No necesita pagar otra vez.</p>' +
+        if (++intentos < max) { setTimeout(revisar, 3000); return; }
+        if (silencioso) return;
+        $v.innerHTML = '<section class="card"><h2>Su pago está en proceso</h2><p class="nota">En cuanto se confirme, su cita queda agendada. No necesita pagar otra vez.</p>' +
           '<a class="btn wa" href="' + waLink("Hola, acabo de pagar mi anticipo en la página de citas.") + '" target="_blank" rel="noopener">¿Dudas? Escríbanos</a></section>';
       }).catch(function () {
-        if (++intentos < 20) { setTimeout(revisar, 3000); return; }
-        falla("No pudimos revisar su pago. Si ya pagó, su cita está segura: escríbanos y se la confirmamos.");
+        if (++intentos < max) { setTimeout(revisar, 3000); return; }
+        if (!silencioso) falla("No pudimos revisar su pago. Si ya pagó, su cita está segura: escríbanos y se la confirmamos.");
       });
     })();
   }
@@ -298,7 +394,7 @@
   }
 
   var ref = params.get("ref");
-  if (ref) regreso(ref); else cargar();
+  if (ref) esperar(ref); else cargar();
 })();
 </script>
 </body>
