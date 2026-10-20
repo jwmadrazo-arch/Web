@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agenda tu cita · Dr. William Madrazo</title>
+<meta name="description" content="Agenda en línea tu valoración con el Dr. William Madrazo en Querétaro: elige día y hora y aparta con tu anticipo.">
+<meta name="api-citas" content="https://alejandra-whatsapp.onrender.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+  :root {
+    --paper: #F6F8F7; --surface: #FFFFFF; --ink: #10262C; --ink-2: #4E6368; --line: #D6E0DD;
+    --accent: #177E6E; --accent-ink: #FFFFFF; --accent-soft: #DDEFEA; --taken: #E9EEEC;
+    --sand: #EFE8DB; --sand-ink: #5B4A2E; --wa: #1E9E5B; --error: #B23A2B;
+    --shadow: 0 1px 2px rgba(16,38,44,.06), 0 10px 30px rgba(16,38,44,.08); --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0C191D; --surface: #122529; --ink: #E4EEEB; --ink-2: #9FB4B0; --line: #223A40;
+      --accent: #4FC3AE; --accent-ink: #062018; --accent-soft: #163B36; --taken: #17292D;
+      --sand: #2A2418; --sand-ink: #E2D3B4; --wa: #2ABF6E; --error: #F08A7A;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0C191D; --surface: #122529; --ink: #E4EEEB; --ink-2: #9FB4B0; --line: #223A40;
+    --accent: #4FC3AE; --accent-ink: #062018; --accent-soft: #163B36; --taken: #17292D;
+    --sand: #2A2418; --sand-ink: #E2D3B4; --wa: #2ABF6E; --error: #F08A7A;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif; font-size: 17px; line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: max(20px, env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-bottom, 0px));
+  }
+  h1, h2 { font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+  .app { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+  header { display: flex; flex-direction: column; gap: 4px; padding-top: 4px; }
+  .marca { font-size: 13px; text-transform: uppercase; letter-spacing: .14em; color: var(--accent); font-weight: 600; margin: 0; }
+  h1 { font-size: 30px; line-height: 1.1; }
+  .sub { color: var(--ink-2); margin: 0; font-size: 16px; }
+  .pasos { display: flex; gap: 6px; }
+  .pasos span { flex: 1; height: 4px; border-radius: 2px; background: var(--line); transition: background .3s; }
+  .pasos span.on { background: var(--accent); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .k { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-2); margin: 0; font-weight: 600; }
+  h2 { font-size: 22px; }
+  .lista { display: flex; flex-direction: column; gap: 10px; }
+  button { font: inherit; color: inherit; }
+  .svc { all: unset; box-sizing: border-box; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  .svc:hover { border-color: var(--accent); }
+  .svc b { display: block; font-weight: 600; }
+  .svc small { display: block; color: var(--ink-2); font-size: 14px; line-height: 1.35; }
+  .svc .precio { text-align: right; white-space: nowrap; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dias { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+  .dia { all: unset; box-sizing: border-box; cursor: pointer; flex: 0 0 62px; text-align: center; padding: 10px 0; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; gap: 1px; }
+  .dia small { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .dia b { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dia[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .dia[aria-pressed="true"] small { color: var(--accent-ink); }
+  .dia:disabled { opacity: .35; cursor: default; }
+  .horas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .hora { all: unset; box-sizing: border-box; cursor: pointer; text-align: center; padding: 12px 0; border: 1px solid var(--line); border-radius: 8px; font-weight: 600; font-variant-numeric: tabular-nums; font-size: 16px; }
+  .hora:hover { border-color: var(--accent); }
+  .hora[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .svc:focus-visible, .dia:focus-visible, .hora:focus-visible, .btn:focus-visible, .atras:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .nota { font-size: 14px; color: var(--ink-2); margin: 0; }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 15px; font-weight: 600; }
+  input[type=text], input[type=tel] { font: inherit; font-weight: 400; font-size: 17px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .acepto { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 400; font-size: 14px; color: var(--ink-2); }
+  .acepto input { margin-top: 3px; accent-color: var(--accent); }
+  .acepto a, .nota a { color: var(--accent); }
+  .oculto { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .error { color: var(--error); font-size: 15px; margin: 0; }
+  .btn { all: unset; box-sizing: border-box; cursor: pointer; text-align: center; background: var(--accent); color: var(--accent-ink); padding: 15px; border-radius: 10px; font-weight: 700; font-size: 17px; }
+  .btn[aria-disabled="true"] { opacity: .45; cursor: default; }
+  .btn.wa { background: var(--wa); color: #fff; }
+  .atras { all: unset; cursor: pointer; color: var(--ink-2); font-size: 15px; align-self: flex-start; }
+  .resumen { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; background: var(--accent-soft); border-radius: 10px; font-size: 16px; }
+  .resumen div { display: flex; justify-content: space-between; gap: 12px; }
+  .resumen span { color: var(--ink-2); }
+  .resumen b { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .resumen .total { border-top: 1px solid var(--line); padding-top: 8px; font-size: 18px; }
+  .aviso { background: var(--sand); color: var(--sand-ink); border-radius: 10px; padding: 12px 14px; font-size: 15px; margin: 0; }
+  .centro { text-align: center; align-items: center; }
+  .ok { width: 60px; height: 60px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+  .cargando { display: flex; gap: 10px; align-items: center; color: var(--ink-2); }
+  .cargando i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: g .8s linear infinite; }
+  @keyframes g { to { transform: rotate(360deg); } }
+  footer { text-align: center; font-size: 14px; color: var(--ink-2); }
+  footer a { color: var(--ink-2); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <p class="marca">Dr. William Madrazo</p>
+    <h1>Agenda tu cita</h1>
+    <p class="sub">Medicina estética y regenerativa guiada por ultrasonido · Querétaro</p>
+  </header>
+  <div class="pasos" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <main id="vista" aria-live="polite"></main>
+  <footer>
+    <p>¿Dudas antes de agendar? <a id="wa-pie" href="#">Escríbenos por WhatsApp</a></p>
+    <p>Lunes a viernes 8:30 a.m. a 6:30 p.m. · Sábados 9:30 a.m. a 1:30 p.m.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var API = document.querySelector('meta[name="api-citas"]').content.replace(/\/$/, "");
+  var WA = "524428508166";
+  var INFO = {
+    estetica: { titulo: "Valoración de medicina estética", desc: "Labios, nariz, toxina, rellenos, bioestimuladores y armonización", total: 500,
+                nota: "Su anticipo de $500 es la valoración completa: ese día no paga nada más por la consulta." },
+    cadera:   { titulo: "Valoración de cadera", desc: "Con ultrasonido en consultorio", total: 1000,
+                nota: "Consulta de $1,000 con ultrasonido: aparta con $500 y el resto lo paga el día de su cita. Si tiene radiografía de pelvis, tráigala." },
+    rodilla:  { titulo: "Valoración de rodilla", desc: "Con ultrasonido en consultorio", total: 1000,
+                nota: "Consulta de $1,000 con ultrasonido: aparta con $500 y el resto lo paga el día de su cita." },
+    hombro:   { titulo: "Valoración de hombro, codo o pie", desc: "Hombro, epicondilitis, fascitis plantar, tendinitis", total: 1000,
+                nota: "Consulta de $1,000 con ultrasonido: aparta con $500 y el resto lo paga el día de su cita." },
+    columna:  { titulo: "Valoración de columna", desc: "Lumbalgia y ciática", total: 1000,
+                nota: "Consulta de $1,000: aparta con $500 y el resto lo paga el día de su cita. Si tiene radiografías o resonancia de columna, tráigalas." }
+  };
+  var DSEM = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+  var DLARGO = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  var MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  var params = new URLSearchParams(location.search);
+  var st = { paso: 0, datos: null, svc: params.get("s") || null, dia: null, hora: null, nombre: "", tel: "", acepto: false,
+             origen: (params.get("o") || params.get("utm_campaign") || params.get("utm_source") || "").slice(0, 40) };
+  var $v = document.getElementById("vista");
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function money(n) { return "$" + Number(n).toLocaleString("es-MX"); }
+  function fecha(iso) { var p = iso.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function fLargo(iso) { var d = fecha(iso); return DLARGO[d.getDay()] + " " + d.getDate() + " de " + MES[d.getMonth()]; }
+  function h12(h) { var p = h.split(":"), hh = +p[0]; return (hh % 12 || 12) + ":" + p[1] + (hh < 12 ? " a.m." : " p.m."); }
+  function waLink(txt) { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt || "Hola, quiero agendar una valoración con el Dr. William Madrazo."); }
+  document.getElementById("wa-pie").href = waLink();
+  function barras() { document.querySelectorAll(".pasos span").forEach(function (s, i) { s.classList.toggle("on", i <= Math.min(st.paso, 3)); }); }
+  function ir(n) { st.paso = n; pintar(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  function cargando(t) { $v.innerHTML = '<section class="card"><div class="cargando"><i></i>' + esc(t) + "</div></section>"; }
+  function falla(t) {
+    $v.innerHTML = '<section class="card"><h2>No pudimos abrir la agenda</h2><p class="nota">' + esc(t) +
+      '</p><a class="btn wa" href="' + waLink() + '" target="_blank" rel="noopener">Agendar por WhatsApp</a></section>';
+  }
+
+  function cargar() {
+    cargando("Buscando horarios disponibles…");
+    fetch(API + "/citas/horarios").then(function (r) { if (!r.ok) throw r; return r.json(); }).then(function (d) {
+      st.datos = d;
+      if (st.svc && !INFO[st.svc]) st.svc = null;
+      ir(st.svc ? 1 : 0);
+    }).catch(function () { falla("En este momento la agenda en línea no responde. Escríbanos y le damos horario en minutos."); });
+  }
+
+  function diasConHoras() { return st.datos.dias.filter(function (d) { return d.horas.length; }); }
+
+  function pintar() {
+    barras();
+    var d = st.datos, s = st.svc && INFO[st.svc];
+    if (st.paso === 0) {
+      $v.innerHTML = '<section class="card"><p class="k">Paso 1 de 4</p><h2>¿Qué cita necesita?</h2><div class="lista">' +
+        d.servicios.map(function (x) {
+          var i = INFO[x.id] || { titulo: x.nombre, desc: "", total: d.anticipo };
+          return '<button class="svc" data-id="' + esc(x.id) + '"><span><b>' + esc(i.titulo) + "</b><small>" + esc(i.desc) +
+            '</small></span><span class="precio">' + money(i.total) + "<small>aparta con " + money(d.anticipo) + "</small></span></button>";
+        }).join("") + "</div></section>";
+      $v.querySelectorAll(".svc").forEach(function (b) { b.onclick = function () { st.svc = b.dataset.id; st.dia = null; st.hora = null; ir(1); }; });
+    }
+    if (st.paso === 1) {
+      var dias = diasConHoras();
+      if (!dias.length) {
+        $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar tipo de cita</button><h2>Por ahora no hay horarios en línea</h2>' +
+          '<p class="nota">La agenda de las próximas dos semanas está llena. Escríbanos y le buscamos un espacio.</p>' +
+          '<a class="btn wa" href="' + waLink("Hola, quiero agendar " + s.titulo.toLowerCase() + " y no encontré horario en la página.") + '" target="_blank" rel="noopener">Escribir por WhatsApp</a></section>';
+        document.getElementById("atras").onclick = function () { ir(0); };
+        return;
+      }
+      if (!st.dia || !dias.some(function (x) { return x.fecha === st.dia; })) st.dia = dias[0].fecha;
+      var horas = (d.dias.filter(function (x) { return x.fecha === st.dia; })[0] || { horas: [] }).horas;
+      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar tipo de cita</button><p class="k">Paso 2 de 4 · ' + esc(s.titulo) +
+        '</p><h2>Elija día y hora</h2><div class="dias" role="group" aria-label="Días disponibles">' +
+        d.dias.map(function (x) {
+          var f = fecha(x.fecha);
+          return '<button class="dia" data-f="' + x.fecha + '"' + (x.horas.length ? "" : " disabled") + ' aria-pressed="' + (x.fecha === st.dia) +
+            '"><small>' + DSEM[f.getDay()] + "</small><b>" + f.getDate() + "</b><small>" + MES[f.getMonth()].slice(0, 3) + "</small></button>";
+        }).join("") + '</div><p class="k">' + esc(fLargo(st.dia)) + '</p><div class="horas" role="group" aria-label="Horas disponibles">' +
+        horas.map(function (h) { return '<button class="hora" data-h="' + h + '" aria-pressed="' + (st.hora === h) + '">' + h12(h) + "</button>"; }).join("") +
+        '</div><p class="nota">Solo aparecen los horarios libres. Cada cita dura una hora.</p>' +
+        '<button class="btn" id="seguir" aria-disabled="' + !st.hora + '">Continuar</button></section>';
+      document.getElementById("atras").onclick = function () { ir(0); };
+      $v.querySelectorAll(".dia").forEach(function (b) { b.onclick = function () { if (b.disabled) return; st.dia = b.dataset.f; st.hora = null; pintar(); }; });
+      $v.querySelectorAll(".hora").forEach(function (b) { b.onclick = function () { st.hora = b.dataset.h; pintar(); }; });
+      document.getElementById("seguir").onclick = function () { if (st.hora) ir(2); };
+      var sel = $v.querySelector('.dia[aria-pressed="true"]'); if (sel) sel.scrollIntoView({ block: "nearest", inline: "center" });
+    }
+    if (st.paso === 2) {
+      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Cambiar horario</button><p class="k">Paso 3 de 4</p><h2>Sus datos</h2>' +
+        '<form id="f" class="lista" novalidate>' +
+        '<label for="nombre">Nombre completo<input type="text" id="nombre" autocomplete="name" value="' + esc(st.nombre) + '"></label>' +
+        '<label for="tel">WhatsApp (10 dígitos)<input type="tel" id="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" value="' + esc(st.tel) + '"></label>' +
+        '<label class="oculto" aria-hidden="true">Sitio<input type="text" id="sitio" tabindex="-1" autocomplete="off"></label>' +
+        '<label class="acepto" for="acepto"><input type="checkbox" id="acepto"' + (st.acepto ? " checked" : "") +
+        '><span>Acepto el <a href="/#privacidad" target="_blank" rel="noopener">aviso de privacidad</a> y que me contacten por WhatsApp sobre mi cita.</span></label>' +
+        '<p class="error" id="err" hidden></p><button class="btn" type="submit">Continuar al anticipo</button></form></section>';
+      document.getElementById("atras").onclick = function () { ir(1); };
+      document.getElementById("f").onsubmit = function (e) {
+        e.preventDefault();
+        st.nombre = document.getElementById("nombre").value.trim().replace(/\s+/g, " ");
+        st.tel = document.getElementById("tel").value.replace(/\D/g, "").replace(/^52(?=\d{10}$)/, "");
+        st.acepto = document.getElementById("acepto").checked;
+        st.sitio = document.getElementById("sitio").value;
+        var err = document.getElementById("err");
+        var m = st.nombre.length < 3 ? "Escriba su nombre completo." : st.tel.length !== 10 ? "Su WhatsApp debe tener 10 dígitos." :
+                !st.acepto ? "Para continuar, acepte el aviso de privacidad." : "";
+        if (m) { err.textContent = m; err.hidden = false; return; }
+        ir(3);
+      };
+    }
+    if (st.paso === 3) {
+      $v.innerHTML = '<section class="card"><button class="atras" id="atras">← Corregir datos</button><p class="k">Paso 4 de 4</p><h2>Aparte su cita con el anticipo</h2>' +
+        '<div class="resumen"><div><span>Cita</span><b>' + esc(s.titulo) + "</b></div><div><span>Día</span><b>" + esc(fLargo(st.dia)) +
+        "</b></div><div><span>Hora</span><b>" + h12(st.hora) + "</b></div><div><span>Paciente</span><b>" + esc(st.nombre) +
+        '</b></div><div class="total"><span>Anticipo hoy</span><b>' + money(d.anticipo) + "</b></div></div>" +
+        '<p class="nota">' + esc(s.nota) + "</p>" +
+        '<p class="error" id="err" hidden></p><button class="btn" id="pagar">Pagar ' + money(d.anticipo) + " con Mercado Pago</button>" +
+        '<p class="nota">Tarjeta de débito, crédito o transferencia. Le guardamos el horario ' + d.apartado_min + ' minutos mientras paga. ' +
+        "Si cancela con menos de 24 horas de aviso, el anticipo no se reembolsa. ¿Prefiere pagar en OXXO? " +
+        '<a href="' + waLink("Hola, quiero agendar " + s.titulo.toLowerCase() + " el " + fLargo(st.dia) + " a las " + h12(st.hora) + " y pagar en OXXO.") +
+        '" target="_blank" rel="noopener">Escríbanos</a>.</p></section>';
+      document.getElementById("atras").onclick = function () { ir(2); };
+      document.getElementById("pagar").onclick = pagar;
+    }
+  }
+
+  function pagar() {
+    var b = document.getElementById("pagar"), err = document.getElementById("err");
+    if (b.getAttribute("aria-disabled") === "true") return;
+    b.setAttribute("aria-disabled", "true"); b.textContent = "Abriendo el pago…"; err.hidden = true;
+    fetch(API + "/citas/apartar", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ servicio: st.svc, fecha: st.dia, hora: st.hora, nombre: st.nombre, telefono: st.tel, origen: st.origen, sitio: st.sitio || "" })
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; }); }).then(function (res) {
+      if (res.ok && res.j.link) { location.href = res.j.link; return; }
+      err.textContent = (res.j && res.j.detail) || "No se pudo abrir el pago. Intente de nuevo.";
+      err.hidden = false; b.removeAttribute("aria-disabled"); b.textContent = "Pagar " + money(st.datos.anticipo) + " con Mercado Pago";
+      if (res.status === 409) {  // el horario se ocupó: recargar horarios y regresar a elegir
+        fetch(API + "/citas/horarios").then(function (r) { return r.json(); }).then(function (d) { st.datos = d; st.hora = null; ir(1); });
+      }
+    }).catch(function () {
+      err.textContent = "No hay conexión con la agenda. Revise su internet e intente de nuevo.";
+      err.hidden = false; b.removeAttribute("aria-disabled"); b.textContent = "Pagar " + money(st.datos.anticipo) + " con Mercado Pago";
+    });
+  }
+
+  // Regreso de Mercado Pago: ?ref=… → se espera la confirmación del pago.
+  function regreso(ref) {
+    st.paso = 4; barras();
+    var intentos = 0;
+    cargando("Confirmando su pago…");
+    (function revisar() {
+      fetch(API + "/citas/estado/" + encodeURIComponent(ref)).then(function (r) { if (!r.ok) throw r; return r.json(); }).then(function (e) {
+        if (e.estado === "agendado") { listo(e); return; }
+        if (e.estado === "pagado sin cita") {
+          $v.innerHTML = '<section class="card"><h2>Recibimos su pago</h2><p class="nota">Su horario se ocupó mientras pagaba. Su anticipo está seguro: en breve le escribimos por WhatsApp para darle otro horario.</p></section>';
+          return;
+        }
+        if (e.estado === "vencido" || e.estado === "reemplazado" || e.estado === "error") {
+          $v.innerHTML = '<section class="card"><h2>El pago no se completó</h2><p class="nota">No se hizo ningún cargo para este horario. Puede volver a elegir su cita.</p>' +
+            '<a class="btn" href="./">Elegir horario otra vez</a></section>';
+          return;
+        }
+        if (++intentos < 20) { setTimeout(revisar, 3000); return; }
+        $v.innerHTML = '<section class="card"><h2>Su pago está en proceso</h2><p class="nota">En cuanto Mercado Pago lo confirme, su cita queda agendada y le avisamos por WhatsApp. No necesita pagar otra vez.</p>' +
+          '<a class="btn wa" href="' + waLink("Hola, acabo de pagar mi anticipo en la página de citas.") + '" target="_blank" rel="noopener">¿Dudas? Escríbanos</a></section>';
+      }).catch(function () {
+        if (++intentos < 20) { setTimeout(revisar, 3000); return; }
+        falla("No pudimos revisar su pago. Si ya pagó, su cita está segura: escríbanos y se la confirmamos.");
+      });
+    })();
+  }
+
+  function listo(e) {
+    $v.innerHTML = '<section class="card centro"><div class="ok" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>' +
+      "<h2>Su cita está confirmada</h2>" +
+      '<div class="resumen" style="width:100%;text-align:left"><div><span>Cita</span><b>' + esc(e.servicio.charAt(0).toUpperCase() + e.servicio.slice(1)) +
+      "</b></div><div><span>Día</span><b>" + esc(fLargo(e.fecha)) + "</b></div><div><span>Hora</span><b>" + h12(e.hora) +
+      "</b></div><div><span>Anticipo</span><b>Pagado</b></div></div>" +
+      '<p class="nota">Un día antes le escribimos por WhatsApp para recordarle su cita con la ubicación del consultorio. Si necesita cambiarla, escríbanos.</p>' +
+      '<a class="btn wa" href="' + waLink("Hola, ya agendé y pagué mi cita en la página.") + '" target="_blank" rel="noopener" style="width:100%">Guardar el WhatsApp del consultorio</a></section>';
+  }
+
+  var ref = params.get("ref");
+  if (ref) regreso(ref); else cargar();
+})();
+</script>
+</body>
+</html>
