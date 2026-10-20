@@ -420,8 +420,10 @@
           return;
         }
         if (e.estado === "apartado" && e.rechazo) {
+          var aqui = !!(st.datos && st.svc && st.dia);  // si regresó de Mercado Pago, se empieza de nuevo
           $v.innerHTML = '<section class="card"><h2>El pago no se completó</h2><p class="nota">' + esc(e.rechazo) +
-            ' Su horario sigue guardado.</p><button class="btn" id="otra">Intentar con otra tarjeta</button></section>';
+            (aqui ? " Su horario sigue guardado." : "") + '</p><button class="btn" id="otra">' +
+            (aqui ? "Intentar con otra tarjeta" : "Elegir horario otra vez") + "</button></section>";
           document.getElementById("otra").onclick = function () {
             if (!st.datos || !st.svc || !st.dia) { location.href = inicio(); return; }  // regresó de Mercado Pago: empieza de nuevo
             st.ref = ref; ir(2);
