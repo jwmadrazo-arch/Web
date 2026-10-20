@@ -354,7 +354,7 @@
   // silencioso: no pinta "Confirmando…" (el reto del banco sigue en pantalla); al confirmar llama a alTerminar.
   function esperar(ref, conReto, silencioso, alTerminar) {
     st.paso = 2; barras();
-    var intentos = 0, max = conReto ? 100 : 40;
+    var intentos = 0, max = silencioso ? 300 : conReto ? 100 : 60;
     if (!silencioso) cargando("Confirmando su pago…");
     (function revisar() {
       if (silencioso && silencioso()) return;  // el reto terminó: ya hay otra espera en curso
@@ -369,7 +369,7 @@
         }
         if (e.estado === "apartado" && e.rechazo) {
           $v.innerHTML = '<section class="card"><h2>El pago no se completó</h2><p class="nota">' + esc(e.rechazo) +
-            ' No se hizo ningún cargo y su horario sigue guardado.</p><button class="btn" id="otra">Intentar con otra tarjeta</button></section>';
+            ' Su horario sigue guardado.</p><button class="btn" id="otra">Intentar con otra tarjeta</button></section>';
           document.getElementById("otra").onclick = function () { st.ref = ref; ir(2); };
           return;
         }
